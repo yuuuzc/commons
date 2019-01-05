@@ -7,14 +7,21 @@ import java.util.Map;
 
 public class ClassUtil {
 
-    public static <T> T newInstance(Map<?, ?> params, Class<T> clazz) {
+    /**
+     * *根据properties和clazz生成一个新的实例对象
+     * 
+     * @param params
+     * @param clazz
+     * @return
+     */
+    public static <T> T newInstance(Map<?, ?> properties, Class<T> clazz) {
         try {
             T o = clazz.newInstance();
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
-                if (params.get(field.getName()) != null) {
+                if (properties.get(field.getName()) != null) {
                     Method method = getSetMethod(o, field.getName());
-                    method.invoke(o, (Object) params.get(field.getName()));
+                    method.invoke(o, (Object) properties.get(field.getName()));
                 }
             }
             return o;

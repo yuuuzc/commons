@@ -8,7 +8,7 @@ import net.sf.cglib.beans.BeanMap;
 public class BeanUtil {
 
     /**
-     * *将对象装换为map
+     * *将对象转化为map
      * 
      * @param bean
      * @return <T> Map<?, ?>
@@ -25,13 +25,13 @@ public class BeanUtil {
     }
 
     /**
-     * *将map装换为javabean对象
+     * *根据properties和clazz生成一个新的bean
      * 
      * @param map
      * @param bean
      * @return <T> T
      */
-    public static <T> T map2Bean(Map<?, ?> map, Class<T> clazz) {
+    public static <T> T newInstance(Map<?, ?> properties, Class<T> clazz) {
         T bean = null;
         try {
             bean = clazz.newInstance();
@@ -39,7 +39,19 @@ public class BeanUtil {
             e.printStackTrace();
         }
         BeanMap beanMap = BeanMap.create(bean);
-        beanMap.putAll(map);
+        beanMap.putAll(properties);
         return bean;
+    }
+
+    /**
+     * *根据properties填充bean
+     * 
+     * @param map
+     * @param bean
+     * @return
+     */
+    public static void populate(Object bean, Map<?, ?> properties) {
+        BeanMap beanMap = BeanMap.create(bean);
+        beanMap.putAll(properties);
     }
 }
